@@ -1,3 +1,5 @@
+import UserSearchForm from '@/components/UserSearchForm';
+
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-8">
@@ -9,6 +11,10 @@ export default function Home() {
           <p className="text-xl text-gray-600 dark:text-gray-400">
             GitHubリポジトリを独自の視点で分析・表示するポートフォリオアプリ
           </p>
+        </div>
+
+        <div className="flex justify-center mt-8">
+          <UserSearchForm />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
@@ -32,12 +38,6 @@ export default function Home() {
               美しいUIでプロジェクトを紹介
             </p>
           </div>
-        </div>
-
-        <div className="text-center mt-12">
-          <button className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold">
-            Get Started
-          </button>
         </div>
       </main>
     </div>
