@@ -68,7 +68,7 @@ export interface RepositoryStats {
 }
 
 export interface GitHubPullRequest {
-  id: number;
+  id: number | string;
   number: number;
   title: string;
   state: 'open' | 'closed';
@@ -79,10 +79,10 @@ export interface GitHubPullRequest {
   body: string | null;
   created_at: string;
   updated_at: string;
-  closed_at: string | null;
-  merged_at: string | null;
+  closed_at?: string | null;
+  merged_at?: string | null;
   html_url: string;
-  head: {
+  head?: {
     ref: string;
     sha: string;
     repo: {
@@ -90,7 +90,7 @@ export interface GitHubPullRequest {
       full_name: string;
     };
   };
-  base: {
+  base?: {
     ref: string;
     sha: string;
     repo: {
@@ -99,20 +99,21 @@ export interface GitHubPullRequest {
     };
   };
   labels: Array<{
-    id: number;
+    id: number | string;
     name: string;
     color: string;
   }>;
-  draft: boolean;
-  mergeable: boolean | null;
-  mergeable_state: string;
+  draft?: boolean;
+  mergeable?: boolean | null;
+  mergeable_state?: string;
   merged: boolean;
-  comments: number;
-  review_comments: number;
+  comments?: number;
+  review_comments?: number;
   commits: number;
   additions: number;
   deletions: number;
-  changed_files: number;
+  changed_files?: number;
+  repository_url?: string;
 }
 
 export interface GitHubPRFile {

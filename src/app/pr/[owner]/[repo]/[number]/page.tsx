@@ -5,15 +5,11 @@ import {
   getPullRequestFiles,
   getPullRequestComments,
 } from '@/lib/github';
+import DiffViewer from '@/components/DiffViewer';
 import Link from 'next/link';
 import Image from 'next/image';
 
 export const dynamic = 'force-dynamic';
-export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  return [];
-}
 
 interface PRPageProps {
   params: Promise<{
@@ -46,8 +42,14 @@ export default async function PRPage({ params }: PRPageProps) {
     ]);
   } catch (e) {
     console.error('PR fetch error:', e);
-    const errorMessage = e instanceof Error ? e.message : String(e);
-    if (errorMessage.includes('Forbidden')) {
+
+    // GitHubAPIError型の確認
+    const isGitHubError = e && typeof e === 'object' && 'status' in e;
+    const status = isGitHubError ? (e as any).status : null;
+
+    if (status === 404) {
+      error = 'このPRは見つかりません';
+    } else if (status === 403) {
       error = 'このリポジトリへのアクセス権限がありません';
     } else {
       error = 'PRの取得に失敗しました';
@@ -195,10 +197,8 @@ export default async function PRPage({ params }: PRPageProps) {
                     </div>
 
                     {file.patch && (
-                      <div className="bg-gray-900 p-4 overflow-x-auto">
-                        <pre className="text-xs text-gray-300 font-mono">
-                          {file.patch}
-                        </pre>
+                      <div className="p-4">
+                        <DiffViewer patch={file.patch} filename={file.filename} />
                       </div>
                     )}
                   </div>

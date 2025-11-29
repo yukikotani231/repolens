@@ -9,6 +9,7 @@ import {
 } from '@/types/github';
 
 const GITHUB_API_BASE = 'https://api.github.com';
+const GITHUB_GRAPHQL_API = 'https://api.github.com/graphql';
 
 export class GitHubAPIError extends Error {
   constructor(
@@ -45,6 +46,45 @@ async function fetchGitHub<T>(
   }
 
   return response.json();
+}
+
+async function fetchGraphQL<T>(
+  query: string,
+  accessToken: string,
+  variables?: Record<string, unknown>
+): Promise<T> {
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${accessToken}`,
+  };
+
+  const response = await fetch(GITHUB_GRAPHQL_API, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      query,
+      variables: variables || {},
+    }),
+    next: { revalidate: 3600 }, // キャッシュを1時間保持
+  });
+
+  if (!response.ok) {
+    throw new GitHubAPIError(
+      `GitHub GraphQL API request failed: ${response.statusText}`,
+      response.status
+    );
+  }
+
+  const data = await response.json();
+
+  if (data.errors) {
+    throw new GitHubAPIError(
+      `GitHub GraphQL error: ${data.errors.map((e: any) => e.message).join(', ')}`,
+      response.status
+    );
+  }
+
+  return data.data as T;
 }
 
 export async function getUserProfile(username: string): Promise<GitHubUser> {
@@ -146,17 +186,105 @@ export async function getUserPullRequests(
   accessToken: string,
   state: 'open' | 'closed' | 'all' = 'open'
 ): Promise<GitHubPullRequest[]> {
-  const params = new URLSearchParams({
-    state,
-    sort: 'updated',
-    direction: 'desc',
-    per_page: '100',
-  });
+  // GraphQL v4 を使用してアクセス可能な PR のみを取得
+  // viewer.pullRequests はユーザーが author または reviewer である PR を返す
+  // viewer.repositories 経由でアクセス可能なリポジトリの PR を取得する別の方法もあるが、
+  // viewer.pullRequests がシンプルで効率的
 
-  return fetchGitHub<GitHubPullRequest[]>(
-    `/user/issues?${params.toString()}`,
-    accessToken
-  );
+  const query = `
+    query GetUserPullRequests($states: [PullRequestState!], $first: Int!) {
+      viewer {
+        pullRequests(
+          first: $first
+          states: $states
+          orderBy: { field: UPDATED_AT, direction: DESC }
+        ) {
+          nodes {
+            id
+            number
+            title
+            body
+            state
+            createdAt
+            updatedAt
+            author {
+              login
+              avatarUrl
+            }
+            repository {
+              nameWithOwner
+              owner {
+                login
+              }
+              name
+            }
+            labels(first: 10) {
+              nodes {
+                id
+                name
+                color
+              }
+            }
+            commits(first: 1) {
+              totalCount
+            }
+            additions
+            deletions
+            merged
+            url
+          }
+        }
+      }
+    }
+  `;
+
+  const states =
+    state === 'all'
+      ? ['OPEN', 'CLOSED']
+      : state === 'open'
+        ? ['OPEN']
+        : ['CLOSED'];
+
+  try {
+    const response = await fetchGraphQL<{
+      viewer: {
+        pullRequests: {
+          nodes: any[];
+        };
+      };
+    }>(query, accessToken, {
+      states,
+      first: 100,
+    });
+
+    return response.viewer.pullRequests.nodes.map((node: any) => ({
+      id: node.id,
+      number: node.number,
+      title: node.title,
+      body: node.body,
+      state: node.state.toLowerCase(),
+      created_at: node.createdAt,
+      updated_at: node.updatedAt,
+      user: {
+        login: node.author?.login || 'unknown',
+        avatar_url: node.author?.avatarUrl || '',
+      },
+      repository_url: `https://api.github.com/repos/${node.repository.nameWithOwner}`,
+      labels: (node.labels?.nodes || []).map((label: any) => ({
+        id: label.id,
+        name: label.name,
+        color: label.color,
+      })),
+      commits: node.commits.totalCount,
+      additions: node.additions,
+      deletions: node.deletions,
+      merged: node.merged,
+      html_url: node.url,
+    }));
+  } catch (error) {
+    console.error('Failed to fetch PRs with GraphQL:', error);
+    throw error;
+  }
 }
 
 export async function getPullRequest(
