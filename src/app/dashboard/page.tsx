@@ -15,23 +15,8 @@ export default async function DashboardPage() {
   let error = null;
 
   try {
-    // GitHub APIからPR一覧を取得
-    // 注: GitHub issuesエンドポイントはPRも返すため、フィルタリングが必要
-    const response = await fetch(
-      'https://api.github.com/issues?filter=all&state=all&per_page=50',
-      {
-        headers: {
-          Authorization: `Bearer ${session.accessToken}`,
-          Accept: 'application/vnd.github.v3+json',
-        },
-      }
-    );
-
-    if (response.ok) {
-      const issues = await response.json();
-      // PRのみをフィルタリング
-      pullRequests = issues.filter((issue: any) => issue.pull_request);
-    }
+    // GitHub APIからPR一覧を取得（open, closed, allの全て）
+    pullRequests = await getUserPullRequests(session.accessToken, 'all');
   } catch (e) {
     error = 'PRの取得に失敗しました';
   }
