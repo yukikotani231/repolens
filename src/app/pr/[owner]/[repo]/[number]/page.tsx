@@ -44,7 +44,13 @@ export default async function PRPage({ params }: PRPageProps) {
       getPullRequestComments(owner, repo, pr_number, session.accessToken),
     ]);
   } catch (e) {
-    error = 'PRの取得に失敗しました';
+    console.error('PR fetch error:', e);
+    const errorMessage = e instanceof Error ? e.message : String(e);
+    if (errorMessage.includes('Forbidden')) {
+      error = 'このリポジトリへのアクセス権限がありません';
+    } else {
+      error = 'PRの取得に失敗しました';
+    }
   }
 
   if (!pr) {
