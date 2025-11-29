@@ -5,6 +5,8 @@ import { GitHubPullRequest } from '@/types/github';
 import Link from 'next/link';
 import Image from 'next/image';
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardPage() {
   const session = await auth();
 
