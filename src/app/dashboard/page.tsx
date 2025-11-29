@@ -1,6 +1,7 @@
 import { auth, signOut } from '@/auth';
 import { redirect } from 'next/navigation';
 import { getUserPullRequests } from '@/lib/github';
+import { GitHubPullRequest } from '@/types/github';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -11,8 +12,8 @@ export default async function DashboardPage() {
     redirect('/');
   }
 
-  let pullRequests = [];
-  let error = null;
+  let pullRequests: GitHubPullRequest[] = [];
+  let error: string | null = null;
 
   try {
     // GitHub APIからPR一覧を取得（open, closed, allの全て）
