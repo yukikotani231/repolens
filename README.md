@@ -1,25 +1,26 @@
 # RepoLens
 
-GitHubアカウントと連携して、リポジトリ情報を独自の視点で分析・表示するポートフォリオアプリケーションです。
+GitHub PR Review Tool - GitHub OAuthで認証し、アクセス可能なプルリクエストを効率的にレビューするWebアプリケーション。
 
 ## 🎯 概要
 
-RepoLensは、GitHub APIを活用してリポジトリの統計情報やコードの品質を分析し、美しいUIで表示するWebアプリケーションです。開発者のポートフォリオとして活用できます。
+RepoLensは、GitHubユーザーがOAuth認証でログインし、自身がアクセスできるプルリクエスト（PR）を一覧表示・詳細確認できるツールです。PRのDiff表示、ファイル変更内容、レビューコメントを独自のUIで確認できます。
 
-## ✨ 主な機能（予定）
+## ✨ 主な機能
 
-- 📊 **リポジトリ分析**: コミット数、言語分布、活動履歴などの統計情報を視覚化
-- 🔍 **コードレビュー**: リポジトリの品質や活動状況を評価
-- 🎨 **カスタムビュー**: プロジェクトを魅力的に紹介するためのカスタマイズ可能なUI
-- 🔐 **GitHub連携**: OAuth認証によるシームレスな連携
+- 🔐 **GitHub OAuth認証**: GitHubアカウントで安全にログイン
+- 📋 **PR一覧表示**: アクセス可能なすべてのプルリクエストを表示
+- 🔍 **Diff表示**: コミット内容の変更を見やすく表示
+- 💬 **レビューコメント**: PR内のレビューコメントを確認
 
 ## 🛠️ 技術スタック
 
 - **フレームワーク**: Next.js 15 (App Router)
 - **言語**: TypeScript
 - **スタイリング**: Tailwind CSS
-- **デプロイ**: GitHub Pages (SSG)
-- **API**: GitHub REST API / GraphQL API
+- **認証**: NextAuth.js v5 + GitHub OAuth
+- **ホスティング**: Vercel
+- **API**: GitHub REST API
 
 ## 📦 セットアップ
 
@@ -27,6 +28,7 @@ RepoLensは、GitHub APIを活用してリポジトリの統計情報やコー�
 
 - Node.js 18.x 以上
 - npm または yarn
+- GitHub OAuth App（開発用・本番用）
 
 ### インストール
 
@@ -34,26 +36,57 @@ RepoLensは、GitHub APIを活用してリポジトリの統計情報やコー�
 # 依存関係のインストール
 npm install
 
-# 開発サーバーの起動
+# 開発サーバーの起動（Turbopackで高速化）
 npm run dev
 ```
 
 開発サーバーが起動したら、ブラウザで [http://localhost:3000](http://localhost:3000) を開いてください。
 
+### 環境変数の設定
+
+`.env.local` ファイルを作成し、以下を設定します：
+
+```env
+GITHUB_CLIENT_ID=<your_dev_oauth_app_client_id>
+GITHUB_CLIENT_SECRET=<your_dev_oauth_app_client_secret>
+AUTH_SECRET=<random_secret_key>
+NEXTAUTH_URL=http://localhost:3000
+```
+
+GitHub OAuth App の作成方法：
+1. https://github.com/settings/developers にアクセス
+2. "New OAuth App" をクリック
+3. Application name: `RepoLens (Dev)`
+4. Homepage URL: `http://localhost:3000`
+5. Authorization callback URL: `http://localhost:3000/api/auth/callback/github`
+
 ## 🚀 ビルドとデプロイ
 
 ```bash
-# プロダクションビルド（静的エクスポート）
+# プロダクションビルド
 npm run build
 
-# ビルドされたファイルは out/ ディレクトリに生成されます
+# 本番サーバーの起動
+npm run start
 ```
 
-### GitHub Pagesへのデプロイ
+### Vercelへのデプロイ
 
-1. リポジトリをGitHubにプッシュ
-2. GitHub Actionsを設定してビルド・デプロイを自動化
-3. Settings > Pages でソースを設定
+```bash
+# Vercel CLIでログイン
+vercel login
+
+# 本番環境にデプロイ
+vercel --prod --yes
+
+# 環境変数を設定
+vercel env add GITHUB_CLIENT_ID production
+vercel env add GITHUB_CLIENT_SECRET production
+vercel env add AUTH_SECRET production
+```
+
+本番環境では、別の GitHub OAuth App を使用してください。
+- Authorization callback URL: `https://<your-vercel-domain>/api/auth/callback/github`
 
 ## 📁 プロジェクト構造
 
@@ -70,13 +103,19 @@ repolens/
 
 ## 🎨 開発ロードマップ
 
+### ✅ 完了
 - [x] プロジェクトセットアップ
-- [ ] GitHub OAuth認証の実装
-- [ ] リポジトリ一覧表示
-- [ ] リポジトリ詳細ページ
-- [ ] 統計情報の視覚化
-- [ ] レスポンシブデザインの最適化
-- [ ] GitHub Actionsによる自動デプロイ
+- [x] GitHub OAuth認証の実装
+- [x] PR一覧表示（ダッシュボード）
+- [x] PR詳細ページ（Diff表示）
+- [x] Vercelへのデプロイ
+
+### 📋 今後の改善
+- [ ] PR へのコメント機能の実装
+- [ ] PR フィルタリング・ソート機能
+- [ ] ダークモード対応
+- [ ] キャッシング戦略の最適化
+- [ ] カスタムドメイン設定
 
 ## 📄 ライセンス
 
