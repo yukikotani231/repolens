@@ -57,11 +57,11 @@ export function parseDiffPatch(patch: string): DiffLine[] {
 export function getDiffLineColor(type: DiffLine['type']): string {
   switch (type) {
     case 'addition':
-      return 'bg-green-100 dark:bg-green-900/40';
+      return 'bg-green-100 dark:bg-green-900';
     case 'deletion':
-      return 'bg-red-100 dark:bg-red-900/40';
+      return 'bg-red-100 dark:bg-red-900';
     case 'hunk':
-      return 'bg-blue-50 dark:bg-blue-900/20';
+      return 'bg-blue-50 dark:bg-blue-900/40';
     case 'header':
       return 'bg-gray-100 dark:bg-gray-700';
     default:
