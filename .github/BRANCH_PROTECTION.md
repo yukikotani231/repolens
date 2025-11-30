@@ -14,12 +14,12 @@
 3. **ルールを設定**
 
    **Branch name pattern**:
+
    ```
    main
    ```
 
    **推奨設定（以下をチェック）**:
-
    - ✅ **Require a pull request before merging**
      - ✅ Require approvals: 1（チーム開発の場合）
      - ⬜ Dismiss stale pull request approvals when new commits are pushed（オプション）
