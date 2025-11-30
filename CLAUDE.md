@@ -23,12 +23,45 @@ npm run format       # Format code with Prettier
 npm run format:check # Check code formatting without making changes
 ```
 
+### CI/CD
+
+```bash
+# All changes must go through pull requests
+# CI automatically runs on every PR and push to main:
+# - ESLint check
+# - Prettier format check
+# - TypeScript type check
+# - Build verification
+```
+
 ### Deployment
 
 ```bash
 vercel --prod --yes  # Deploy to Vercel production
 vercel env ls        # List environment variables
 vercel env add       # Add/update environment variables
+```
+
+### Pull Request Workflow
+
+```bash
+# 1. Create a new branch from main
+git checkout main
+git pull origin main
+git checkout -b feature/your-feature-name
+
+# 2. Make changes and ensure quality checks pass
+npm run format       # Format code
+npm run lint:fix     # Fix linting issues
+npm run build        # Verify build succeeds
+
+# 3. Commit and push
+git add .
+git commit -m "feat: your feature description"
+git push origin feature/your-feature-name
+
+# 4. Create PR on GitHub - CI will automatically run
+# 5. After CI passes and review approval, merge to main
 ```
 
 ## Project Architecture
@@ -42,6 +75,7 @@ vercel env add       # Add/update environment variables
 - **Hosting**: Vercel (serverless)
 - **Build Tool**: Turbopack (for faster dev startup)
 - **Code Quality**: ESLint + Prettier
+- **CI/CD**: GitHub Actions (lint, format, type-check, build)
 
 ### Key Architectural Decisions
 
@@ -134,6 +168,17 @@ Same as above but using production OAuth app credentials.
 - Callback URL must match exactly: `{NEXTAUTH_URL}/api/auth/callback/github`
 
 ## Important Notes
+
+### Development Workflow
+
+- **All changes must go through pull requests** - Direct pushes to main are blocked
+- **Branch protection is enabled** - See `.github/BRANCH_PROTECTION.md` for setup
+- **CI checks are required** - PRs must pass all checks before merging:
+  - ESLint validation
+  - Prettier format check
+  - TypeScript type check
+  - Build verification
+- Use feature branches: `feature/`, `fix/`, `chore/`, etc.
 
 ### Codebase Language
 
