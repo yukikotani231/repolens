@@ -1,10 +1,6 @@
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
-import {
-  getPullRequest,
-  getPullRequestFiles,
-  getPullRequestComments,
-} from '@/lib/github';
+import { getPullRequest, getPullRequestFiles, getPullRequestComments } from '@/lib/github';
 import DiffViewer from '@/components/DiffViewer';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -63,10 +59,7 @@ export default async function PRPage({ params }: PRPageProps) {
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
             {error || 'PRが見つかりませんでした'}
           </h1>
-          <Link
-            href="/dashboard"
-            className="text-blue-600 dark:text-blue-400 hover:underline"
-          >
+          <Link href="/dashboard" className="text-blue-600 dark:text-blue-400 hover:underline">
             ダッシュボードに戻る
           </Link>
         </div>
@@ -93,12 +86,7 @@ export default async function PRPage({ params }: PRPageProps) {
             href="/dashboard"
             className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline mb-4"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -115,13 +103,9 @@ export default async function PRPage({ params }: PRPageProps) {
                 <span className="text-sm text-gray-600 dark:text-gray-400 font-mono">
                   {owner}/{repo}
                 </span>
-                <span className="text-sm text-gray-500 dark:text-gray-500">
-                  #{pr.number}
-                </span>
+                <span className="text-sm text-gray-500 dark:text-gray-500">#{pr.number}</span>
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                {pr.title}
-              </h1>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{pr.title}</h1>
             </div>
 
             {pr.state === 'open' && (
@@ -143,13 +127,9 @@ export default async function PRPage({ params }: PRPageProps) {
           <div className="lg:col-span-2 space-y-6">
             {pr.body && (
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                  説明
-                </h2>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">説明</h2>
                 <div className="prose dark:prose-invert max-w-none">
-                  <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
-                    {pr.body}
-                  </p>
+                  <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{pr.body}</p>
                 </div>
               </div>
             )}
@@ -190,9 +170,7 @@ export default async function PRPage({ params }: PRPageProps) {
                         <span className="text-green-600 dark:text-green-400">
                           +{file.additions}
                         </span>
-                        <span className="text-red-600 dark:text-red-400">
-                          -{file.deletions}
-                        </span>
+                        <span className="text-red-600 dark:text-red-400">-{file.deletions}</span>
                       </div>
                     </div>
 
@@ -258,9 +236,7 @@ export default async function PRPage({ params }: PRPageProps) {
 
           <div className="space-y-6">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                情報
-              </h2>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">情報</h2>
 
               <div className="space-y-3 text-sm">
                 <div className="flex items-center gap-2">
@@ -272,33 +248,21 @@ export default async function PRPage({ params }: PRPageProps) {
                     className="rounded-full"
                     unoptimized
                   />
-                  <span className="text-gray-700 dark:text-gray-300">
-                    {pr.user.login}
-                  </span>
+                  <span className="text-gray-700 dark:text-gray-300">{pr.user.login}</span>
                 </div>
 
                 <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
-                  <div className="text-gray-600 dark:text-gray-400">
-                    作成日:
-                  </div>
-                  <div className="text-gray-900 dark:text-white">
-                    {formatDate(pr.created_at)}
-                  </div>
+                  <div className="text-gray-600 dark:text-gray-400">作成日:</div>
+                  <div className="text-gray-900 dark:text-white">{formatDate(pr.created_at)}</div>
                 </div>
 
                 <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
-                  <div className="text-gray-600 dark:text-gray-400">
-                    最終更新:
-                  </div>
-                  <div className="text-gray-900 dark:text-white">
-                    {formatDate(pr.updated_at)}
-                  </div>
+                  <div className="text-gray-600 dark:text-gray-400">最終更新:</div>
+                  <div className="text-gray-900 dark:text-white">{formatDate(pr.updated_at)}</div>
                 </div>
 
                 <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
-                  <div className="text-gray-600 dark:text-gray-400">
-                    ブランチ:
-                  </div>
+                  <div className="text-gray-600 dark:text-gray-400">ブランチ:</div>
                   <div className="font-mono text-sm text-gray-900 dark:text-white">
                     {pr.head.ref} → {pr.base.ref}
                   </div>
@@ -310,25 +274,19 @@ export default async function PRPage({ params }: PRPageProps) {
                       <div className="text-2xl font-bold text-gray-900 dark:text-white">
                         {pr.commits}
                       </div>
-                      <div className="text-xs text-gray-600 dark:text-gray-400">
-                        Commits
-                      </div>
+                      <div className="text-xs text-gray-600 dark:text-gray-400">Commits</div>
                     </div>
                     <div>
                       <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                         +{pr.additions}
                       </div>
-                      <div className="text-xs text-gray-600 dark:text-gray-400">
-                        追加
-                      </div>
+                      <div className="text-xs text-gray-600 dark:text-gray-400">追加</div>
                     </div>
                     <div>
                       <div className="text-2xl font-bold text-red-600 dark:text-red-400">
                         -{pr.deletions}
                       </div>
-                      <div className="text-xs text-gray-600 dark:text-gray-400">
-                        削除
-                      </div>
+                      <div className="text-xs text-gray-600 dark:text-gray-400">削除</div>
                     </div>
                   </div>
                 </div>

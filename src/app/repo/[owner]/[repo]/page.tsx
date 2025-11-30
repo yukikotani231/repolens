@@ -1,8 +1,4 @@
-import {
-  getRepositoryDetails,
-  getRepositoryLanguages,
-  getRepositoryCommits,
-} from '@/lib/github';
+import { getRepositoryDetails, getRepositoryLanguages, getRepositoryCommits } from '@/lib/github';
 import LanguageStats from '@/components/LanguageStats';
 import Link from 'next/link';
 import { Metadata } from 'next';
@@ -20,9 +16,7 @@ export async function generateStaticParams() {
   return [];
 }
 
-export async function generateMetadata({
-  params,
-}: RepoPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: RepoPageProps): Promise<Metadata> {
   const { owner, repo } = await params;
   return {
     title: `${owner}/${repo} - RepoLens`,
@@ -58,12 +52,7 @@ export default async function RepoPage({ params }: RepoPageProps) {
             href={`/user/${owner}`}
             className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline mb-6"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -81,9 +70,7 @@ export default async function RepoPage({ params }: RepoPageProps) {
                   <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
                     {repository.name}
                   </h1>
-                  <p className="text-gray-600 dark:text-gray-400 mt-1">
-                    {repository.full_name}
-                  </p>
+                  <p className="text-gray-600 dark:text-gray-400 mt-1">{repository.full_name}</p>
                 </div>
                 {repository.fork && (
                   <span className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-full text-sm">
@@ -103,33 +90,25 @@ export default async function RepoPage({ params }: RepoPageProps) {
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">
                     {repository.stargazers_count}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
-                    Stars
-                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Stars</div>
                 </div>
                 <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">
                     {repository.forks_count}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
-                    Forks
-                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Forks</div>
                 </div>
                 <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">
                     {repository.watchers_count}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
-                    Watchers
-                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Watchers</div>
                 </div>
                 <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">
                     {repository.open_issues_count}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
-                    Issues
-                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Issues</div>
                 </div>
               </div>
 
@@ -159,11 +138,7 @@ export default async function RepoPage({ params }: RepoPageProps) {
                     rel="noopener noreferrer"
                     className="flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400"
                   >
-                    <svg
-                      className="w-4 h-4"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
                       <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
                     </svg>
@@ -172,9 +147,7 @@ export default async function RepoPage({ params }: RepoPageProps) {
                 )}
                 <div>作成日: {formatDate(repository.created_at)}</div>
                 <div>最終更新: {formatDate(repository.updated_at)}</div>
-                <div>
-                  最終プッシュ: {formatDate(repository.pushed_at)}
-                </div>
+                <div>最終プッシュ: {formatDate(repository.pushed_at)}</div>
               </div>
 
               <a
@@ -195,9 +168,7 @@ export default async function RepoPage({ params }: RepoPageProps) {
             </div>
 
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                使用言語
-              </h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">使用言語</h2>
               <LanguageStats languages={languages} />
             </div>
 
@@ -207,18 +178,14 @@ export default async function RepoPage({ params }: RepoPageProps) {
               </h2>
               <div className="space-y-4">
                 {commits.map((commit) => (
-                  <div
-                    key={commit.sha}
-                    className="border-l-4 border-blue-500 pl-4 py-2"
-                  >
+                  <div key={commit.sha} className="border-l-4 border-blue-500 pl-4 py-2">
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
                         <p className="text-gray-900 dark:text-white font-medium">
                           {commit.commit.message.split('\n')[0]}
                         </p>
                         <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                          {commit.commit.author.name} •{' '}
-                          {formatDate(commit.commit.author.date)}
+                          {commit.commit.author.name} • {formatDate(commit.commit.author.date)}
                         </p>
                       </div>
                       <a

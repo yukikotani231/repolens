@@ -16,9 +16,7 @@ export default function RepositoryList({ repositories }: RepositoryListProps) {
 
   const languages = Array.from(
     new Set(
-      repositories
-        .map((repo) => repo.language)
-        .filter((lang): lang is string => lang !== null)
+      repositories.map((repo) => repo.language).filter((lang): lang is string => lang !== null)
     )
   ).sort();
 
@@ -37,9 +35,7 @@ export default function RepositoryList({ repositories }: RepositoryListProps) {
           return a.name.localeCompare(b.name);
         case 'updated':
         default:
-          return (
-            new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-          );
+          return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
       }
     });
 
@@ -47,9 +43,7 @@ export default function RepositoryList({ repositories }: RepositoryListProps) {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600 dark:text-gray-400">
-            並び替え:
-          </span>
+          <span className="text-sm text-gray-600 dark:text-gray-400">並び替え:</span>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as SortOption)}
@@ -65,9 +59,7 @@ export default function RepositoryList({ repositories }: RepositoryListProps) {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600 dark:text-gray-400">
-            言語:
-          </span>
+          <span className="text-sm text-gray-600 dark:text-gray-400">言語:</span>
           <select
             value={filterLanguage}
             onChange={(e) => setFilterLanguage(e.target.value)}

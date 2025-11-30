@@ -57,6 +57,7 @@ NEXTAUTH_URL=http://localhost:3000
 ```
 
 GitHub OAuth App の作成方法：
+
 1. https://github.com/settings/developers にアクセス
 2. "New OAuth App" をクリック
 3. Application name: `RepoLens (Dev)`
@@ -89,6 +90,7 @@ vercel env add AUTH_SECRET production
 ```
 
 本番環境では、別の GitHub OAuth App を使用してください。
+
 - Authorization callback URL: `https://<your-vercel-domain>/api/auth/callback/github`
 
 ## 📁 プロジェクト構造
@@ -116,6 +118,7 @@ repolens/
 ## 🎨 開発ロードマップ
 
 ### ✅ 完了
+
 - [x] プロジェクトセットアップ
 - [x] GitHub OAuth認証の実装
 - [x] PR一覧表示（ダッシュボード）
@@ -127,6 +130,7 @@ repolens/
 ### 📋 TODO（今後の改善）
 
 #### Diff表示の強化
+
 - [ ] シンタックスハイライト（言語別のコードハイライト）
 - [ ] 行番号の表示
 - [ ] Diff内の検索・フィルタリング機能
@@ -134,18 +138,21 @@ repolens/
 - [ ] ファイル間のナビゲーション改善
 
 #### レビュー機能
+
 - [ ] PR へのコメント投稿機能
 - [ ] インラインコメント機能（特定行へのコメント）
 - [ ] レビューステータスの変更（Approve/Request Changes）
 - [ ] コメントスレッドの表示・返信
 
 #### UI/UX改善
+
 - [ ] PR フィルタリング・ソート機能
 - [ ] ダークモードの切り替えUI（現在は自動対応のみ）
 - [ ] キーボードショートカット
 - [ ] レスポンシブデザインの最適化
 
 #### パフォーマンス・インフラ
+
 - [ ] キャッシング戦略の最適化
 - [ ] 大きなDiffの仮想スクロール対応
 - [ ] カスタムドメイン設定

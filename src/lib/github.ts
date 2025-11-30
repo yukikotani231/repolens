@@ -21,10 +21,7 @@ export class GitHubAPIError extends Error {
   }
 }
 
-async function fetchGitHub<T>(
-  endpoint: string,
-  accessToken?: string
-): Promise<T> {
+async function fetchGitHub<T>(endpoint: string, accessToken?: string): Promise<T> {
   const headers: HeadersInit = {
     Accept: 'application/vnd.github.v3+json',
   };
@@ -39,10 +36,7 @@ async function fetchGitHub<T>(
   });
 
   if (!response.ok) {
-    throw new GitHubAPIError(
-      `GitHub API request failed: ${response.statusText}`,
-      response.status
-    );
+    throw new GitHubAPIError(`GitHub API request failed: ${response.statusText}`, response.status);
   }
 
   return response.json();
@@ -106,9 +100,7 @@ export async function getUserRepositories(
     per_page: per_page.toString(),
   });
 
-  return fetchGitHub<GitHubRepository[]>(
-    `/users/${username}/repos?${params.toString()}`
-  );
+  return fetchGitHub<GitHubRepository[]>(`/users/${username}/repos?${params.toString()}`);
 }
 
 export async function getRepositoryLanguages(
@@ -127,15 +119,10 @@ export async function getRepositoryCommits(
     per_page: per_page.toString(),
   });
 
-  return fetchGitHub<GitHubCommit[]>(
-    `/repos/${owner}/${repo}/commits?${params.toString()}`
-  );
+  return fetchGitHub<GitHubCommit[]>(`/repos/${owner}/${repo}/commits?${params.toString()}`);
 }
 
-export async function getRepositoryDetails(
-  owner: string,
-  repo: string
-): Promise<GitHubRepository> {
+export async function getRepositoryDetails(owner: string, repo: string): Promise<GitHubRepository> {
   return fetchGitHub<GitHubRepository>(`/repos/${owner}/${repo}`);
 }
 
@@ -238,12 +225,7 @@ export async function getUserPullRequests(
     }
   `;
 
-  const states =
-    state === 'all'
-      ? ['OPEN', 'CLOSED']
-      : state === 'open'
-        ? ['OPEN']
-        : ['CLOSED'];
+  const states = state === 'all' ? ['OPEN', 'CLOSED'] : state === 'open' ? ['OPEN'] : ['CLOSED'];
 
   try {
     const response = await fetchGraphQL<{
@@ -293,10 +275,7 @@ export async function getPullRequest(
   pr_number: number,
   accessToken: string
 ): Promise<GitHubPullRequest> {
-  return fetchGitHub<GitHubPullRequest>(
-    `/repos/${owner}/${repo}/pulls/${pr_number}`,
-    accessToken
-  );
+  return fetchGitHub<GitHubPullRequest>(`/repos/${owner}/${repo}/pulls/${pr_number}`, accessToken);
 }
 
 export async function getPullRequestFiles(

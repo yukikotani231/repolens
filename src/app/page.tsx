@@ -34,9 +34,7 @@ export default async function Home() {
               <div className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                 <span className="text-2xl">📋</span>
                 <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white">
-                    PR一覧表示
-                  </h3>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">PR一覧表示</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
                     アクセス可能なすべてのPRを一覧表示
                   </p>
@@ -46,21 +44,15 @@ export default async function Home() {
               <div className="flex items-start gap-3 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
                 <span className="text-2xl">🔍</span>
                 <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white">
-                    Diff表示
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    変更内容を見やすく表示
-                  </p>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">Diff表示</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">変更内容を見やすく表示</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
                 <span className="text-2xl">💬</span>
                 <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white">
-                    レビューコメント
-                  </h3>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">レビューコメント</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
                     直接コメントを追加してレビュー
                   </p>

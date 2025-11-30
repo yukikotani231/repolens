@@ -76,9 +76,7 @@ export default async function DashboardPage() {
 
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Pull Requests
-          </h2>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Pull Requests</h2>
           <p className="text-gray-600 dark:text-gray-400">
             あなたがアクセス可能なプルリクエスト一覧
           </p>
@@ -113,9 +111,7 @@ export default async function DashboardPage() {
                       <span className="text-sm text-gray-600 dark:text-gray-400 font-mono">
                         {owner}/{repo}
                       </span>
-                      <span className="text-sm text-gray-500 dark:text-gray-500">
-                        #{pr.number}
-                      </span>
+                      <span className="text-sm text-gray-500 dark:text-gray-500">#{pr.number}</span>
                     </div>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                       {pr.title}
